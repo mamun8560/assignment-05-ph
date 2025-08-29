@@ -200,3 +200,63 @@ const callButton9 = document
     }
     coins.innerText = totalCoin;
   });
+  
+
+
+
+
+
+  // Select all copy buttons
+const copyButtons = document.querySelectorAll(".copy-button");
+
+// Add event listener to each button
+copyButtons.forEach((btn) => {
+  btn.addEventListener("click", async () => {
+    // Find the card that contains this button
+    const card = btn.closest(".shadow-xl");
+
+    // Inside this card, find the number (id starts with "num")
+    const numberEl = card.querySelector("[id^='num']");
+    const textToCopy = numberEl ? numberEl.innerText.trim() : "";
+
+    if (!textToCopy) {
+      alert("No number found to copy!");
+      return;
+    }
+
+    try {
+      // Modern clipboard API
+      await navigator.clipboard.writeText(textToCopy);
+      flashCopied(btn); // show user feedback
+    } catch (err) {
+      // Fallback for older browsers
+      const ta = document.createElement("textarea");
+      ta.value = textToCopy;
+      document.body.appendChild(ta);
+      ta.select();
+      try {
+        document.execCommand("copy");
+        flashCopied(btn);
+      } catch (err2) {
+        alert("Copy failed. Please copy manually: " + textToCopy);
+      } finally {
+        document.body.removeChild(ta);
+      }
+    }
+  });
+});
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
