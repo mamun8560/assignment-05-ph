@@ -31,7 +31,7 @@ copyButtons.forEach((button) => {
         myInput.value = numberText;
       }
 
-      alert(`Copied and pasted: ${numberText}`);
+      alert(`Copy: ${numberText}`);
     } catch (err) {
       console.error("Failed: ", err);
     }
@@ -56,8 +56,6 @@ const callButton = document
     coins.innerText = totalCoin;
   });
 
-
-
 // for 2nd div
 
 const subtitle2 = document.getElementById("sub-2");
@@ -75,7 +73,7 @@ const callButton2 = document
     coins.innerText = totalCoin;
   });
 
-  // for 3rd div
+// for 3rd div
 
 const subtitle3 = document.getElementById("sub-3");
 const helpNumber3 = document.getElementById("num3");
@@ -92,8 +90,7 @@ const callButton3 = document
     coins.innerText = totalCoin;
   });
 
-
-  // for 4th div
+// for 4th div
 
 const subtitle4 = document.getElementById("sub-4");
 const helpNumber4 = document.getElementById("num4");
@@ -109,7 +106,6 @@ const callButton4 = document
     }
     coins.innerText = totalCoin;
   });
-
 
 // for 5th div
 
@@ -127,7 +123,7 @@ const callButton5 = document
     }
     coins.innerText = totalCoin;
   });
-  
+
 // for 6th div
 
 const subtitle6 = document.getElementById("sub-6");
@@ -144,8 +140,6 @@ const callButton6 = document
     }
     coins.innerText = totalCoin;
   });
-
-
 
 // for 7th div
 
@@ -164,7 +158,6 @@ const callButton7 = document
     coins.innerText = totalCoin;
   });
 
-  
 // for 8th div
 
 const subtitle8 = document.getElementById("sub-8");
@@ -182,9 +175,7 @@ const callButton8 = document
     coins.innerText = totalCoin;
   });
 
-
-
-  // for 9th div
+// for 9th div
 
 const subtitle9 = document.getElementById("sub-9");
 const helpNumber9 = document.getElementById("num9");
@@ -199,64 +190,54 @@ const callButton9 = document
       alert("Unsufficient Coin, minimum 20 coins require to make a call");
     }
     coins.innerText = totalCoin;
+
+    const data = {
+      name: subtitle9.innerText,
+      help: helpNumber9.innerText,
+      date: new Date().toLocaleTimeString(),
+    };
+    transection.push(data);
+    console.log(transection);
   });
-  
 
+// clear history
 
-
-
-
-  // Select all copy buttons
-const copyButtons = document.querySelectorAll(".copy-button");
-
-// Add event listener to each button
-copyButtons.forEach((btn) => {
-  btn.addEventListener("click", async () => {
-    // Find the card that contains this button
-    const card = btn.closest(".shadow-xl");
-
-    // Inside this card, find the number (id starts with "num")
-    const numberEl = card.querySelector("[id^='num']");
-    const textToCopy = numberEl ? numberEl.innerText.trim() : "";
-
-    if (!textToCopy) {
-      alert("No number found to copy!");
-      return;
-    }
-
-    try {
-      // Modern clipboard API
-      await navigator.clipboard.writeText(textToCopy);
-      flashCopied(btn); // show user feedback
-    } catch (err) {
-      // Fallback for older browsers
-      const ta = document.createElement("textarea");
-      ta.value = textToCopy;
-      document.body.appendChild(ta);
-      ta.select();
-      try {
-        document.execCommand("copy");
-        flashCopied(btn);
-      } catch (err2) {
-        alert("Copy failed. Please copy manually: " + textToCopy);
-      } finally {
-        document.body.removeChild(ta);
-      }
-    }
-  });
+document.getElementById("clear-btn").addEventListener("click", function () {
+  document.getElementById("history").innerHTML = "";
 });
 
+// practice
 
+const callButtons = document.querySelectorAll(".call-button");
+const historyContainer = document.getElementById("transection-container");
 
+function getCurrentTime() {
+  return new Date().toLocaleTimeString();
+}
 
+callButtons.forEach((button) => {
+  button.addEventListener("click", () => {
+    const card = button.closest("div.shadow-xl");
+    const subtitle = card.querySelector("h1[id^='sub']").innerText;
+    const number = card.querySelector("h1[id^='num']").innerText;
 
+    const historyDiv = document.createElement("div");
+    historyDiv.className =
+      "flex gap-3 py-3 px-[1px] rounded-lg mt-3 mb-3 bg-[#f2f2f2]";
 
+    const leftDiv = document.createElement("div");
+    leftDiv.innerHTML = `<p class="font-bold">${subtitle}</p><p>${number}</p>`;
 
+    const rightDiv = document.createElement("div");
+    rightDiv.innerHTML = `<p>${getCurrentTime()}</p>`;
 
+    historyDiv.appendChild(leftDiv);
+    historyDiv.appendChild(rightDiv);
 
-
-
-
-
-
-
+    const historySection = document.getElementById("history");
+    historySection.parentNode.insertBefore(
+      historyDiv,
+      historySection.nextSibling
+    );
+  });
+});
